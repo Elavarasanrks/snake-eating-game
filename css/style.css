@@ -1,0 +1,51 @@
+body {
+  font-family: fantasy !important;
+}
+.modal-title {
+  float: left;
+}
+#displaycount {
+  position: absolute; 
+  display: none;
+  font-size: 100px;
+}
+#playbtn {
+  position: absolute; 
+  display: none;  
+ }
+.gameover-title {
+  background-color: grey;
+  border-radius: 5px;
+}
+.gameover-footer {
+  background-color:grey;
+  border-radius: 5px;
+}
+#modal-body {
+  background-color:grey;
+}
+.modal-header {  
+  border-bottom: 1px solid gold;
+}
+.modal-footer {
+  border-top: 1px solid gold;
+}
+.tdnum {
+  font-size: 25px;
+  padding: 6px;
+}
+#lockblock {
+  display: none;
+}
+#title {
+  font-size: 30px;
+  color: white;
+}
+.table-odd {
+  background-color: #b8daff;
+  border-color: #7abaff;
+}
+.table-even {
+  background-color: #c3e6cb;
+  border-color: #8fd19e;
+}

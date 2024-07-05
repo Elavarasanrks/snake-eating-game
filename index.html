@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Snake Game</title>  
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/style.css"> 
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>  
+</head>
+<body style="margin: 0px;" background="img/bg.jpg">
+  <div class="container-fluid">
+    <nav id="snakenav" style="background-color: white;border-color: white;display: none;" class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand"><img style="float: left;" src="img/coins.png" /><span style="padding-left: 6px;" id="coins" class="">000</span></div>
+        </div>        
+      </div>
+    </nav>    
+    <div class="row" id="title">Snake Eating Game</div>
+    <div class="row" id="lockblock">
+      <table>
+        <tr>
+          <td align="center" class="tdnum"><img id="level0" onclick="level(0)" src="img/unlock-72.png"></td>          
+          <td align="center" class="tdnum"><img id="level1" onclick="level(1)" src="img/lock-72.png"></td>
+          <td align="center" class="tdnum"><img id="level2" onclick="level(2)" src="img/lock-72.png"></td>
+          <td align="center" class="tdnum"><img id="level3" onclick="level(3)" src="img/lock-72.png"></td>
+        </tr>
+        <tr>
+          <td align="center" class="tdnum">1</td>
+          <td align="center" class="tdnum">2</td>
+          <td align="center" class="tdnum">3</td>
+          <td align="center" class="tdnum">4</td>
+        </tr>  
+        <tr>
+          <td align="center" class="tdnum"><img id="level4" onclick="level(4)" src="img/lock-72.png"></td>
+          <td align="center" class="tdnum"><img id="level5" onclick="level(5)" src="img/lock-72.png"></td>
+          <td align="center" class="tdnum"><img id="level6" onclick="level(6)" src="img/lock-72.png"></td>
+          <td align="center" class="tdnum"><img id="level7" onclick="level(7)" src="img/lock-72.png"></td>
+        </tr>  
+        <tr>
+          <td align="center" class="tdnum">5</td>
+          <td align="center" class="tdnum">6</td>
+          <td align="center" class="tdnum">7</td>
+          <td align="center" class="tdnum">8</td>
+        </tr>     
+      </table>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirm" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="gameoverTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header gameover-title">
+          <h5 class="modal-title" id="gameoverTitle"><img src="img/coins-24.png" /></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-body">            
+          <p>Do you want to use the coins to unlock this level?</p>
+          <p><img src="img/coins-96.png" /><span style="padding-left: 10px;" id="coins" class="">000</span></p>
+        </div>
+        <div class="modal-footer gameover-footer">          
+          <button onclick="unlock()" type="button" class="btn btn-primary">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="lowcoins" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="gameoverTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header gameover-title">
+          <h5 class="modal-title" id="gameoverTitle"><img src="img/coins-24.png" /></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-body">            
+          <p>! To unlock this level, you need</p>
+          <p><img src="img/coins-96.png" /><span style="padding-left: 10px;" id="lowcoincount" class="">000</span></p>
+        </div>
+        <div class="modal-footer gameover-footer">          
+          <button data-dismiss="modal" aria-label="Close" type="button" class="btn btn-primary">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>
+<script>
+  
+  var width  = Math.floor(window.innerWidth/2);
+  var height = Math.floor(window.innerHeight/2);  
+  var unlocklevel = 0;
+  var totallevel = 8;
+  var unlock_coins = [0 , 300 , 500 , 800 ,1000 ,1500 ,2000 , 2500];
+  
+  document.getElementById("confirm").style.top = (window.innerHeight/2-150) + 'px';
+  document.getElementById("lowcoins").style.top = (window.innerHeight/2-150) + 'px';
+
+  // Unlock the level
+
+  function unlock() {
+    localStorage['level' + unlocklevel] = 1;
+    localStorage['coins'] = localStorage['coins'] - unlock_coins[unlocklevel];    
+    window.location.href = "home.html?level=" + unlocklevel;
+  }
+  
+  function level(index) {
+    if(localStorage['level'+ index] == 1) { 
+      window.location.href = "home.html?level=" + index;
+    }
+    else {
+      if(localStorage['coins'] >= unlock_coins[index]) {
+        document.getElementById("coins").innerHTML = localStorage['coins'];
+        $('#confirm').modal('show');
+        unlocklevel = index;
+        //document.getElementById("confirm").style.display = "block";
+      }
+      else {
+        document.getElementById("lowcoincount").innerHTML = unlock_coins[index];
+        $('#lowcoins').modal('show');
+      }
+    }    
+  }
+  function init() {
+    document.getElementById("title").style.marginLeft = width-150 + 'px';
+    document.getElementById("title").style.marginTop = height-60 + 'px';    
+    setTimeout(displayLevelBlock, 2000);
+    
+    
+
+    // Set local storage variables.
+
+    for(var i=0;i<totallevel;i++) {
+      if(typeof(localStorage['level'+ i + 'hight_score']) == "undefined") {
+        localStorage['level'+ i + 'hight_score'] = 0;
+      }
+      if(typeof(localStorage['level'+ i + 'score']) == "undefined") {
+        localStorage['level'+ i + 'score'] = 0;
+      }  
+    }
+    if(typeof(localStorage['coins']) == "undefined") {
+      localStorage['coins'] = 0;
+    }   
+
+    for(var i=0;i<totallevel;i++) {
+      if(typeof(localStorage['level'+ i]) == "undefined") {
+        localStorage['level'+ i] = 0;
+      }    
+    }
+    document.getElementById("level0").src = "img/unlock-72.png"; 
+    localStorage['level0'] = 1;
+    for(var i=1;i<8;i++) {
+      if(localStorage['level'+ i] == 1) {      
+        document.getElementById("level" + i).src = "img/unlock-72.png";      
+      }
+      else {
+        document.getElementById("level" + i).src = "img/lock-72.png";      
+      }    
+    }
+    document.getElementById("coins").innerHTML = localStorage['coins'];
+  }
+  function displayLevelBlock() {
+    document.getElementById("title").style.display = "none";
+    document.getElementById("lockblock").style.marginLeft = width-180 + 'px';
+    document.getElementById("lockblock").style.marginTop = height-140 + 'px';
+    document.getElementById("lockblock").style.display = "block";
+    document.getElementById("snakenav").style.display = "block";
+    
+  }
+  init();  
+  //alert(localStorage['level7'])
+   
+</script>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/admob.js"></script> 
